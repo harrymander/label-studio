@@ -18,11 +18,11 @@ jobs:
       # doesn't seem to properly build in the changes to the frontend unless
       # they are built locally first.
       - name: Setup node
-        working-directory: ./web
         uses: actions/setup-node@v4
         with:
           node-version: 18
           cache: yarn
+          cache-dependency-path: ./web/yarn.lock
       - name: Install yarn dependencies
         working-directory: ./web
         run: yarn install --frozen-lockfile
