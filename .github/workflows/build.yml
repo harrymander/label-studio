@@ -12,6 +12,24 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      # Setup node and build the frontend. For some reason Label Studio checks
+      # the built frontend into source control, and the Docker image build
+      # doesn't seem to properly build in the changes to the frontend unless
+      # they are built locally first.
+      - name: Setup node
+        working-directory: ./web
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: yarn
+      - name: Install yarn dependencies
+        working-directory: ./web
+        run: yarn install --frozen-lockfile
+      - name: Build frontend
+        working-directory: ./web
+        run: yarn build
+
       - name: Setup Docker buildx action
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
